@@ -1,6 +1,5 @@
 import React from "react";
-import Menu from "./Menu";
-import Routes from "./Routes";
+import Menu from "../Components/Menu";
 
 import "./Layout.css";
 
@@ -11,7 +10,7 @@ import "./Layout.css";
  *
  * @returns {JSX.Element}
  */
-function Layout() {
+function Layout({children}) {
   return (
     <div className="container-fluid">
       <div className="row h-100">
@@ -19,7 +18,7 @@ function Layout() {
           <Menu />
         </div>
         <div className="col">
-          <Routes />
+          {children}
         </div>
       </div>
     </div>
