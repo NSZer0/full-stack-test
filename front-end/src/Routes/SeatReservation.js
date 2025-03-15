@@ -16,6 +16,7 @@ function SeatReservation({ reservations }) {
   const { reservationId } = useParams();
 
   const bShowStatus = false;
+  const bShowReservation = true;
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -86,14 +87,19 @@ function SeatReservation({ reservations }) {
         <button className="btn btn-secondary" onClick={() => navigate(-1)}>Cancel</button>
       </div>
       <div>
-        <ItemReservation bShowStatus={bShowStatus} />
+        <ItemReservation 
+        reservation={reservation}
+        bShowStatus={bShowStatus} />
       </div>
       <div >
         <TableSelector tables={tables} handleChange={handleChange} handleSubmit={handleSubmit}/>
       </div>   
       <h3 className="title">Tables</h3>
       <div className="row">
-        <ListTables tables={tables} reservations={reservations} />
+        <ListTables
+          tables={tables}
+          bShowReservation={bShowReservation}
+          reservations={reservations} />
       </div>
     </main>
   );

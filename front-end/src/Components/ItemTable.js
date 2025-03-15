@@ -1,8 +1,6 @@
 import React from "react";
 
-function ItemTable ({ key, table, reservation = {}, handleFinish = {} }) {
-  const bShowReservation = Object.keys(reservation).length < 0;
-
+function ItemTable ({ key, table, bShowReservation = false, reservation = {}, handleFinish = {} }) {
   return (
     <li key={`table-${key}`}>
       <div className="card">
@@ -14,16 +12,18 @@ function ItemTable ({ key, table, reservation = {}, handleFinish = {} }) {
               Status:
               {table.reservation_id ? (
                 <>
-                  <p className="status-occupied">Occupied: {table.reservation_id}</p>
                   {bShowReservation ? (
                     <>
-                      <div>Reservation: {table.reservation_id}</div>
+                      <div>Reservation: Reservation-{table.reservation_id}</div>
                       <div>{reservation.first_name} {reservation.last_name}</div>
                       <div>{reservation.reservation_time}</div>
                       <div>{reservation.reservation_date}</div>
                     </>
                   ) : (
-                    <button className="btn btn-info" value={table.table_id} onClick={(event) => handleFinish(event)}>Submit</button>
+                    <div>
+                      <p className="status-occupied">Occupied: Reservation-{table.reservation_id}</p>
+                      <button data-table-id-finish={table.table_id} className="btn btn-info" value={table.table_id} onClick={(event) => handleFinish(event)}>Finish</button>
+                    </div>
                   )}
                 </> 
               ) : (

@@ -30,7 +30,8 @@ function Search({ reservations }) {
       const abortController = new AbortController();
 
       const fetchReservations = await searchReservations(searchData.mobile_number, abortController.signal);
-      if (fetchReservations.length < 0) {
+      console.log(fetchReservations);
+      if (fetchReservations.length > 0) {
         setFoundReservations(fetchReservations);
         setSearchError(null);
       }

@@ -32,7 +32,7 @@ function Dashboard() {
 
     try {
       setDashboardError(null);
-      const fetchReservations = await listReservations(date, abortController.signal);
+      const fetchReservations = await listReservations({ date }, abortController.signal);
 
       if (fetchReservations.length === 0) 
         setDashboardError({ message: "No reservations found" });
@@ -72,12 +72,12 @@ function Dashboard() {
 
     if (window.confirm("Do you want to cancel this reservation?\r\n\r\nThis cannot be undone.")) {
       const selectedTableId = event.target.value;
-      const finishedReservation = reservations.find(reservation => reservation.reservation_id === Number(selectedTableId));
+      const cancelledReservation = reservations.find(reservation => reservation.reservation_id === Number(selectedTableId));
 
       try {
         const abortController = new AbortController();
 
-        await updateReservationStatus(Number(finishedReservation.reservation_id), "Finished", abortController.signal);
+        await updateReservationStatus(Number(cancelledReservation.reservation_id), "cancelled", abortController.signal);
         navigate(0); // Refresh the page to update the change
       }
       catch (error) {
@@ -97,7 +97,7 @@ function Dashboard() {
         const selectedTable = tables.find(table => table.table_id === Number(selectedTableId));
         const finishedReservation = reservations.find(reservation => reservation.reservation_id === Number(selectedTable.reservation_id));
   
-        await updateReservationStatus(Number(finishedReservation.reservation_id), "cancelled", abortController.signal);
+        await updateReservationStatus(Number(finishedReservation.reservation_id), "finished", abortController.signal);
         await deleteTableReservation(Number(selectedTableId), abortController.signal);
         navigate(0); // Refresh the page to update the change
       }
@@ -109,7 +109,6 @@ function Dashboard() {
 
   return (
     <main>
-      <ErrorAlert error={dashboardError} />
       <h1>Dashboard</h1>
       <div>
         <button className="btn btn-secondary" onClick={() => navigate(`/dashboard?date=${previous(date)}`)}>Previous</button>
@@ -121,6 +120,7 @@ function Dashboard() {
       </div>
       <div>
         <ListReservations reservations={reservations} handleCancelReservation={handleCancelReservation} />
+        <ErrorAlert error={dashboardError} />
       </div>
       <div>
         <h4 className="mb-0">Tables</h4>

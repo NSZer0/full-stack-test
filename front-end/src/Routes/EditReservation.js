@@ -45,7 +45,7 @@ function EditReservation() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
+    console.log(reservation);
     try {
       const abortController = new AbortController();
 
@@ -67,7 +67,12 @@ function EditReservation() {
 
   return (
     <>
-      <FormReservation formError={formError} handleChange={handleChange} handleSubmit={handleSubmit} handleCancel={handleCancel}/>
+      <FormReservation
+        reservation={reservation}
+        formError={formError}
+        handleChange={handleChange}
+        handleSubmit={handleSubmit}
+        handleCancel={handleCancel} />
     </>
   )
 }

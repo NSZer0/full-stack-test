@@ -66,10 +66,11 @@ export async function listReservations(params, signal) {
     // Contruct the base URL
     const url = new URL(`${API_BASE_URL}/reservations`);
     // Append parameters to the URL (dates)
+    console.log(params);
     Object.entries(params).forEach(([key, value]) =>
       url.searchParams.append(key, value.toString())
     );
-
+    console.log(url);
     return await fetchJson(url, { headers, signal }, [])
       .then(formatReservationDate)
       .then(formatReservationTime);
@@ -200,10 +201,10 @@ export async function updateReservationStatus(reservationId, reservationStatus, 
 export async function searchReservations(mobile_number, signal) {
   try {
     // Contruct the base URL
-    const url = `${API_BASE_URL}/reservations`;
+    const url = new URL(`${API_BASE_URL}/reservations`);
     // Append the mobile number to the URL if it exists
     if (mobile_number)
-      url.searchParams.append('mobile_number', mobile_number);
+      url.searchParams.append("mobile_number", mobile_number);
 
     return await fetchJson(url, { headers, signal }, [])
       .then(formatReservationDate)

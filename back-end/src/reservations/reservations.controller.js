@@ -52,7 +52,9 @@ function validateReservationTimeAndDate(req, res, next) {
     return next({ status: 400, message: "reservation_date is not a valid date" });
 
   const timePattern = /^([01]?\d|2[0-3]):[0-5]\d$/;
-  if (!timePattern.test(reservation_time))
+  const timePatternWithSeconds = /^([01]\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+  const bValidTime = (timePattern.test(reservation_time) || timePatternWithSeconds.test(reservation_time));
+  if (!bValidTime)
     return next({ status: 400, message: "reservation_time is not a valid time" });
 
   if (reservationDateTime.getDay() === 2)
