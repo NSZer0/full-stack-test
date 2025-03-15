@@ -84,9 +84,6 @@ function validateStatus(req, res, next) {
   if (!status)
     next({ status: 400, message: "Status property is missing." });
 
-  if (status !== "booked" || status !== "seated")
-    next({ status: 400, message: "Status must be 'booked' or 'seated' to update." });
-
   if (status === "finished" || status === "cancelled")
     next({ status: 400, message: `Cannot change status if it is '${status}'.` });
 
@@ -112,9 +109,7 @@ async function list(req, res) {
 }
 
 async function read(req, res) {
-  const { reservation } = res.locals;
-
-  res.status(200).json({ data: reservation[0] });
+  res.status(200).json({ data: res.locals.reservation });
 }
 
 async function create(req, res) {

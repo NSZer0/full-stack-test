@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { updateReservationStatus, getReservation, listTables, assignTableReservation} from "../utils/api";
+import { updateReservationStatus, getReservation, listTables, seatReservation} from "../utils/api";
 import TableSelector from "../Components/TableSelector";
 import ListTables from "../Containers/ListTables";
 import ItemReservation from "../Components/ItemReservation";
 import ErrorAlert from "../Components/ErrorAlert";
 
-function AssignReservation({ reservations }) {
+function SeatReservation({ reservations }) {
   const [reservation, setReservation] = useState([]);
   const [pageError, setPageError] = useState(null);
   const [tables, setTables] = useState([]);
   const [selectedTable, setSelectedTable] = useState(null);
 
   const navigate = useNavigate();
-  const {reservationId} = useParams();
+  const { reservationId } = useParams();
 
   const bShowStatus = false;
 
@@ -28,6 +28,7 @@ function AssignReservation({ reservations }) {
         setReservation(response);
       }
       catch (error) {
+        console.log(error);
         setPageError(error);
       }
     }
@@ -68,7 +69,7 @@ function AssignReservation({ reservations }) {
     try {
       const abortController = new AbortController();
 
-      await assignTableReservation(Number(selectedTable.table_id), reservation, abortController.signal);
+      await seatReservation(Number(selectedTable.table_id), reservation, abortController.signal);
       await updateReservationStatus(reservation.reservation_id, "seated", abortController.signal);
       navigate(`/dashboard`);
     }
@@ -98,4 +99,4 @@ function AssignReservation({ reservations }) {
   );
 }
 
-export default AssignReservation;
+export default SeatReservation;

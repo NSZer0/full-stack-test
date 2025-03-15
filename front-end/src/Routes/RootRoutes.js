@@ -5,7 +5,7 @@ import { listReservations, listTables } from "../utils/api";
 import Dashboard from "./Dashboard";
 import CreateReservation from "./CreateReservation";
 import EditReservation from "./EditReservation";
-import AssignReservation from "./AssignReservation"
+import SeatReservation from "./SeatReservation"
 import CreateTable from "./CreateTable";
 import Search from "./Search";
 import NotFound from "./NotFound";
@@ -64,7 +64,7 @@ function RootRoutes() {
       <Route path="/reservations/*">
         <Route path="new" element={<CreateReservation />} />
         <Route path=":reservationId/*">
-          <Route path="seat" element={<AssignReservation reservations={reservations} tables={tables} />} />    
+          <Route path="seat" element={<SeatReservation reservations={reservations} tables={tables} />} />    
           <Route path="edit" element={<EditReservation />} />
         </Route>
       </Route>

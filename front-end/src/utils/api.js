@@ -140,6 +140,9 @@ export async function createReservation(reservation, signal) {
  */
 export async function editReservation(reservation, signal) {
   try {
+    // Force type for people to number
+    reservation.people = Number(reservation.people);
+
     // Contruct the base URL
     const url = `${API_BASE_URL}/reservations/${reservation.reservation_id}`;
     // Contruct API call options
@@ -239,6 +242,9 @@ export async function listTables(signal) {
  */
 export async function createTable(table, signal) {
   try {
+    // Force type for capacity to number
+    table.capacity = Number(table.capacity);
+
     // Contruct the base URL
     const url = `${API_BASE_URL}/tables`;
     // Contruct API call options
@@ -265,7 +271,7 @@ export async function createTable(table, signal) {
  * @param signal
  * The abort controller object
  */
-export async function assignTableReservation(tableId, reservation, signal) {
+export async function seatReservation(tableId, reservation, signal) {
   try {
     // Contruct the base URL
     const url = `${API_BASE_URL}/tables/${tableId}/seat`;

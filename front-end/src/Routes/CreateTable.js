@@ -39,7 +39,7 @@ function CreateTable() {
     event.preventDefault();
     
     setTable(initialFormState);
-    navigate(`/dashboard`);
+    navigate(-1);
   }
 
   return (
