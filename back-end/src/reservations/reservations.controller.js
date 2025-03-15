@@ -78,14 +78,28 @@ function validatePeople(req, res, next) {
   next();
 }
 
-function validateStatus(req, res, next) {
+function validateCreateStatus(req, res, next) {
+  const { status } = req.body.data;
+
+  if (status === "seated" || status === "finished")
+    return next({ status: 400, message: "New reservation status cannot be set to 'seated' or 'finished'." });
+
+  next();
+}
+
+function validateUpdateStatus(req, res, next) {
   const { status } = req.body.data;
 
   if (!status)
     next({ status: 400, message: "Status property is missing." });
 
-  if (status === "finished" || status === "cancelled")
-    next({ status: 400, message: `Cannot change status if it is '${status}'.` });
+  const statusCheck = ["booked", "seated", "finished", "cancelled"];
+  if (!statusCheck.includes(status))
+    return next({ status: 400, message: "Reservation status is unknown" });
+
+  const reservationStatus = res.locals.reservation.status;
+  if (reservationStatus === "finished" || reservationStatus === "cancelled")
+    next({ status: 400, message: `Cannot change status if it is '${reservationStatus}'.` });
 
   next();
 }
@@ -131,10 +145,11 @@ async function editReservation(req, res) {
 }
 
 async function updateReservationStatus(req, res) {
-  const reservationId = res.locals.reservation.reservation_id;
+  const reservation = res.locals.reservation;
   const updatedReservation = {
-    ...req.body.data, 
-    reservation_id: reservationId,
+    ...reservation,
+    reservation_id: reservation.reservation_id,
+    status: req.body.data.status
   };
 
   const results = await service.update(updatedReservation);
@@ -156,6 +171,7 @@ module.exports = {
     requestDataHasProperties,
     validateReservationTimeAndDate,
     validatePeople,
+    validateCreateStatus,
     asyncErrorBoundary(create),
   ],
   editReservation: [
@@ -167,7 +183,7 @@ module.exports = {
   ],
   updateReservationStatus: [
     asyncErrorBoundary(reservationExists),
-    validateStatus,
+    validateUpdateStatus,
     asyncErrorBoundary(updateReservationStatus),
   ],
 };

@@ -10,6 +10,7 @@ function listForDate(date) {
   return knex("reservations")
     .select("*")
     .where("reservation_date", date)
+    .whereNot("status", "finished")
     .orderBy("reservation_time", "asc");
 }
 
@@ -32,7 +33,7 @@ function update(reservation) {
   return knex("reservations")
     .select("*")
     .where("reservation_id", reservation.reservation_id)
-    .update(reservation, "*")
+    .update(reservation, "*");
 }
 
 function search(mobile_number) {
