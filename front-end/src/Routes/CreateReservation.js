@@ -32,7 +32,7 @@ function CreateReservation() {
 
       await createReservation(reservation, abortController.signal);
       setReservation(initialFormState);
-      navigate(`/dashboard`);
+      navigate(`/dashboard?date=${reservation.reservation_date}`);
     }
     catch (error) {
       setFormError(error);
