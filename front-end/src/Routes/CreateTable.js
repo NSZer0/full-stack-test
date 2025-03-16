@@ -13,6 +13,7 @@ function CreateTable() {
 
   const navigate = useNavigate();
 
+  // Updates the reservation state variable when an input is changed
   const handleChange = ({target}) => {
     setTable({
       ...table,
@@ -20,14 +21,19 @@ function CreateTable() {
     });
   };
 
+  // Called when 'Submit' button is clicked
+  // Resets form and navigates to the dashboard
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
       const abortController = new AbortController();
 
+      // API call to validate and create the table
       await createTable(table, abortController.signal);
+      // Reset form to initial state
       setTable(initialFormState);
+      // Navigate to previous page
       navigate(`/dashboard`);
     }
     catch (error) {
@@ -35,13 +41,18 @@ function CreateTable() {
     }
   };
 
+  // Triggers when 'Cancel' button is clicked
+  // Resets form and navigates to previous page
   const handleCancel = (event) => {
     event.preventDefault();
     
+    // Reset form to initial state
     setTable(initialFormState);
+    // Navigate to previous page
     navigate(-1);
   }
 
+  // Render the page
   return (
     <>
       <FormTable formError={formError} handleChange={handleChange} handleSubmit={handleSubmit} handleCancel={handleCancel}/>
